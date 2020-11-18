@@ -8,7 +8,7 @@
             this._nome = "";
             this._login= "";
             this._imagem= "";
-            this._repos= ""; 
+            this._repos= []; 
         }
 
 
@@ -56,7 +56,7 @@
                 if(request.status == 200)
                 {    
                     let dadosRepositorio = JSON.parse(request.responseText);
-                    this._repositorios = dadosRepositorio;
+                    this._repos=  dadosRepositorio;
                     console.log(this._repositorios);                   
                 }
     
@@ -78,7 +78,7 @@
             this._login = dadosUsuario.login;
             console.log(this._login)
             this._imagem = dados.avatar_url;
-            this._repos = dadosRepositorio;
+           
             console.log(this._repos);
             console.log(this._repositorios);
             
@@ -103,7 +103,7 @@
 
         getRepos() 
         {
-            return this._repositorios;
+            return this._repos;
         }
         
     }
@@ -113,7 +113,7 @@
         
         apresenta ( dados )
         {
-            let repos = this._repositorios
+            let repos = dados.getRepos();
             console.log(repos)
             let nome = document.querySelector('.nomeDoPerfil');
             nome.textContent = dados.getNome();
@@ -127,22 +127,27 @@
         }
     }
 
-    
+ 
+
 
     class Controller
     {
+        constructor()
+        {
+            this.model = null;
+        }
         procuraUsuario(login)
         {
-            let user = new UserModel;
-            user.buscaUsuario(login);
+            this.model = new UserModel;
+            this.model.buscaUsuario(login);
 
             let view = new UserView();
-            view.apresenta( user );
+            view.apresenta( this.model);
         }
 
         localizaRepositorio(login)
         {
-            let user = new UserModel
+            let user = this.model
             user.localizaRepositorio(login);
             let view = new UserView;
             view.apresenta( user)
@@ -159,9 +164,10 @@
     {
     envent.preventDefault();
     let nomeUsuario = document.querySelector('#search').value;
-    
-    controller.localizaRepositorio(nomeUsuario);
+
     controller.procuraUsuario(nomeUsuario);
+    controller.localizaRepositorio(nomeUsuario);
+    
 
     });
 
