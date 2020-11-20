@@ -57,9 +57,9 @@
                 {    
                     let dadosRepositorio = JSON.parse(request.responseText);
                     this._repos=  dadosRepositorio;
-                    console.log(this._repositorios);                   
+                                      
                 }
-    
+                
             })
     
     
@@ -71,16 +71,13 @@
 
         _atualizaDados( dadosUsuario )
         {
-            // console.log(dadosUsuario);
-            // console.log( "Model: Atualizando os meus dados" );
+            console.log( "Model: Atualizando os meus dados" );
             this._nome= dadosUsuario.name;
-            console.log(this._nome)
             this._login = dadosUsuario.login;
             console.log(this._login)
-            this._imagem = dados.avatar_url;
-           
+            this._imagem = dadosUsuario.avatar_url;
             console.log(this._repos);
-            console.log(this._repositorios);
+            console.log(dadosRepositorio);
             
         }
 
@@ -113,16 +110,24 @@
         
         apresenta ( dados )
         {
-            let repos = dados.getRepos();
-            console.log(repos)
+            
             let nome = document.querySelector('.nomeDoPerfil');
             nome.textContent = dados.getNome();
+            // console.log(nome)
             let log = document.querySelector('.login');
             log.textContent = dados.getLogin();
-            let foto = document.querySelector('#foto_perfil');
-            foto.src = dados.getImagem();
-            // let repos = document.querySelector('.repos')
-            // console.log(dados._repositorios);
+
+            let foto = document.querySelector('.imagem');
+            
+            foto.innerHTML = `<img src="${dados.getImagem()}">`;
+            
+            let mostraUsuario = document.querySelector('.mostraUsuario');
+
+            // // let repos = documet.querySelector('.repositorios');
+            // repos.textContent =dados.getRepos()
+            console.log(dados.getRepos())
+            // ; ;
+            // console.log(repos)
               
         }
     }
@@ -161,13 +166,11 @@
     let body = document.querySelector('.principal')
 
     btnSearch.addEventListener('click', function(envent)
-    {
-    envent.preventDefault();
-    let nomeUsuario = document.querySelector('#search').value;
-
-    controller.procuraUsuario(nomeUsuario);
-    controller.localizaRepositorio(nomeUsuario);
-    
-
-    });
-
+        {
+            envent.preventDefault();
+            let nomeUsuario = document.querySelector('#search').value;
+            controller.procuraUsuario(nomeUsuario);
+            controller.localizaRepositorio(nomeUsuario);
+            // inputSearch.value = "";
+            // inputSearch.focus();
+        });
